@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research a string</title>
+
+    
+</head>
+<body>
+
+    <header>
+        <a href="https://github.com/SecchioNerd">My github</a>
+
+        <h1>Research String</h1>
+
+        <button id="but" onclick="addCss()">Add CSS</button>
+    </header>
+    
+    
+
+    <div class="addcss">
+        <div>
+            <p>write a word to add in an list/array</p>
+            <input type="text" onchange="addInArray()" id="addarray">
+            <p>write a word to search in the list/array</p>
+            <input type="text" onchange="search()" id="search">
+        </div>
+
+        <div>
+            <br>
+            <p>Word on list/array</p>
+            <ul id="lista">
+                
+            </ul>
+        </div>
+
+        <div>
+            <br>
+            <p>Word Result similar</p>
+            <ul id="similar">
+                
+            </ul>
+        </div>
+    </div>
+
+    
+
+    <script>
+        let i=0;
+        function addCss(){
+            if(i%2==0){
+                document.getElementById("head").innerHTML += '<link id="style" rel="stylesheet" href="style/style.css">';
+                document.getElementById("but").innerText = 'Remove Css';
+            }
+            else{
+                document.getElementById("style").remove();
+                document.getElementById("but").innerText = 'Add CSS';
+            }
+            
+            i++;
+        }
+
+        //this is the array where there is the string (you can add the string)
+        let array = [];
+
+        //this function put the string you have write in the array
+        function addInArray (){
+
+            //if there isn' t char in the string this function do nothing
+            if(document.getElementById("addarray").value==''){
+                
+            }
+
+            else{
+                array.push(document.getElementById("addarray").value);
+
+                document.getElementById("lista").innerHTML+= ' <li id="'+document.getElementById("addarray").value+'"><button onclick=\"elimina(\''+document.getElementById("addarray").value+'\')\">x</button> '+document.getElementById("addarray").value+'</li>'
+            }
+        }
+
+
+        function elimina(eliminare){
+            document.getElementById(eliminare).remove();
+
+            while(array.includes(eliminare)){
+                array.splice(array.indexOf(eliminare),1);
+            }
+            
+        }
+
+//---->
+
+
+        let hashStringa = new Map();
+        let hashArray = new Map();
+        //this is the function you must copy for searc a string
+        function search(){
+
+            hashStringa.clear();
+            hashArray.clear()
+
+            document.getElementById("similar").innerHTML = '';
+
+            let stringa = document.getElementById("search").value;  //this is the variable to search in the array
+
+            console.log(stringa);
+
+            mappingString(1,stringa);
+
+            for(let i=0;i<array.length;i++){
+                mappingString(0,array[i]);
+
+                //punteggio in italian is point
+                let punteggio=0;
+
+                //dare il punteggio
+
+                for(let x=0;x<hashStringa.size;x++){
+
+                    
+                }
+
+                hashStringa.forEach((value,key,char) => {
+                    if(hashArray.has(key)==true){
+                        punteggio++;
+                        if(value == hashArray.get(key)){
+                            punteggio+=3;
+                        }
+                    }
+                });
+
+                //median of punteggio
+                punteggio/= hashStringa.size;
+
+                if(punteggio>=3){
+                    document.getElementById("similar").innerHTML += '<li>'+array[i]+'</li>';
+                }
+
+                console.log(punteggio);
+
+                hashArray.clear();
+            }
+        }
+
+        function mappingString(num, stringa){
+            //this is an array for separete the char of the 'stringa'
+            let arrayChar = [];
+
+            let key;
+            let value = 0;
+
+            for (let i = 0; i < stringa.length; i++) {
+                if (!arrayChar.includes(stringa[i])) {
+                    arrayChar.push(stringa[i]);
+
+                    key = stringa[i];
+
+                    console.log(key); // Mostra il nuovo carattere unico
+
+                    for(x=0;x < stringa.length; x++){
+                        if(key === stringa[x]){
+                            value++;
+                        }
+                    }
+
+                    console.log(value);
+
+                    if(num==1){
+                        hashStringa.set(key,value);
+                    }
+                    else{
+                        hashArray.set(key,value);
+                    }
+                    
+                    value=0;
+                }
+            }
+        }
+
+
+//<----
+    </script>
+</body>
+</html>
